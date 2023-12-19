@@ -1,0 +1,39 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Publicar Pacote Exkyn Mail
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+env:
+  PASTA: ${{ github.workspace }}/output
+  
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restaura as Dependencias
+      run: dotnet restore
+      
+    - name: Gera o Pacote
+      run: dotnet build -c Release -o ${{ env.PASTA }}
+    
+    - name: Publica Pacote no Github
+      run: |
+        dotnet nuget add source --username dmodesigner --password ${{ secrets.PASSWORD_GITHUB }} --store-password-in-clear-text --name github ${{ secrets.PACKAGE_GITHUB }}
+        dotnet nuget push ${{ env.PASTA }}/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source ${{ secrets.PACKAGE_GITHUB }} --skip-duplicate
+        
+    - name: Publica Pacote no Nuget
+      run: dotnet nuget push ${{ env.PASTA }}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_SERVER }} --skip-duplicate

@@ -10,9 +10,11 @@
     <Description>Biblioteca para envio de e-mail usando .NET.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/dmodesigner/Exkyn.Mail</RepositoryUrl>
-    <PackageTags>exkyn exkyn.mail email</PackageTags>
+    <PackageTags>exkyn; exkyn.mail; enviar email; enviar e-mail</PackageTags>
     <Version>1.0.0</Version>
     <PackageIcon>icon-exkyn.png</PackageIcon>
+    <PackageId>Exkyn.Mail</PackageId>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
